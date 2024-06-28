@@ -1,17 +1,13 @@
-version: '3.8'
-
+version: "3"
 services:
-  jenkins:
-    image: jenkins/jenkins:lts
-    container_name: jenkins
-    ports:
-      - "8080:8080"
-      - "50000:50000"
-    volumes:
-      - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
+  app-db:
+    image: mysql
     environment:
-      - JENKINS_OPTS=--httpPort=8080
-
-volumes:
-  jenkins_home:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=myDB
+  app:
+    build: .
+    ports:
+      - "8081:8081"
+    depends_on:
+      - app-db
